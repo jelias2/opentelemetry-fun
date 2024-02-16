@@ -1,4 +1,4 @@
-resource "kubernetes_deployment" "example" {
+resource "kubernetes_deployment" "nginx" {
   metadata {
     name      = "nginx-deployment"
     namespace = var.nginx-namespace
@@ -35,15 +35,15 @@ resource "kubernetes_deployment" "example" {
   }
 }
 
-resource "kubernetes_service" "example" {
+resource "kubernetes_service" "nginx-service" {
   metadata {
-    name      = "example-service"
+    name      = "nginx-service"
     namespace = var.nginx-namespace
   }
 
   spec {
     selector = {
-      app = kubernetes_deployment.example.spec[0].template[0].metadata[0].labels.app
+      app = kubernetes_deployment.nginx.spec[0].template[0].metadata[0].labels.app
     }
 
     port {

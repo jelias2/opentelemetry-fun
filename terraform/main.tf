@@ -1,13 +1,12 @@
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
   config_context = "minikube"
+  config_path    = var.kubeconfig
 }
 
-# vars.tfvars
-variable "namespace" {
-  description = "Namespace for minikube"
-  type        = string
-  default     = "dev"
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig
+  }
 }
 
 resource "kubernetes_namespace" "example" {
@@ -15,7 +14,6 @@ resource "kubernetes_namespace" "example" {
     name = var.namespace
   }
 }
-
 
 module "nginx" {
   source          = "./submodules/nginx"
@@ -27,6 +25,11 @@ module "api" {
   source        = "./submodules/api"
   api-replicas  = 1
   api-namespace = var.namespace
+}
+
+module "helm" {
+  source         = "./submodules/helm"
+  helm-namespace = var.namespace
 }
 
 
