@@ -1,2 +1,1 @@
-namepace = "dev"
-replicas = 2
+namepace = "jacob"
