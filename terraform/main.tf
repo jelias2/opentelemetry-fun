@@ -17,8 +17,23 @@ resource "kubernetes_namespace" "example" {
 }
 
 
-module "submodule" {
+module "nginx" {
   source          = "./submodules/nginx"
   nginx-replicas  = 2
   nginx-namespace = var.namespace
+}
+
+module "api" {
+  source        = "./submodules/api"
+  api-replicas  = 1
+  api-namespace = var.namespace
+}
+
+
+output "api-status" {
+  value = module.api.api-deployment-status
+}
+
+output "nginx-tf-id" {
+  value = module.nginx.nginx-id
 }

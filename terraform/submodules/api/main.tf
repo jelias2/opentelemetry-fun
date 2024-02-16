@@ -1,11 +1,11 @@
 resource "kubernetes_deployment" "example" {
   metadata {
-    name      = "nginx-deployment"
-    namespace = var.nginx-namespace
+    name      = "api-deployment"
+    namespace = var.api-namespace
   }
 
   spec {
-    replicas = var.nginx-replicas
+    replicas = var.api-replicas
 
     selector {
       match_labels = {
@@ -24,10 +24,10 @@ resource "kubernetes_deployment" "example" {
 
       spec {
         container {
-          image = "nginx:latest"
-          name  = "nginx-container"
+          image = "us-central1-docker.pkg.dev/workspace-406820/legal-api-container-repo/legal-term-api:monitor"
+          name  = "api-container"
           port {
-            container_port = 80
+            container_port = 8000
           }
         }
       }
@@ -37,8 +37,8 @@ resource "kubernetes_deployment" "example" {
 
 resource "kubernetes_service" "example" {
   metadata {
-    name      = "example-service"
-    namespace = var.nginx-namespace
+    name      = "api-service"
+    namespace = var.api-namespace
   }
 
   spec {
@@ -47,7 +47,7 @@ resource "kubernetes_service" "example" {
     }
 
     port {
-      port        = 80
+      port        = 8000
       target_port = 8000
     }
   }
