@@ -2,11 +2,14 @@ resource "kubernetes_deployment" "example" {
   metadata {
     name      = "api-deployment"
     namespace = var.api-namespace
+    labels = {
+      app         = "api"
+      provisioner = "terraform"
+    }
   }
 
   spec {
     replicas = var.api-replicas
-
     selector {
       match_labels = {
         app         = "api"
@@ -39,14 +42,20 @@ resource "kubernetes_service" "example" {
   metadata {
     name      = "api-service"
     namespace = var.api-namespace
+    labels = {
+      app         = "api"
+      provisioner = "terraform"
+    }
   }
 
   spec {
     selector = {
-      app = kubernetes_deployment.example.spec[0].template[0].metadata[0].labels.app
+      app         = "api"
+      provisioner = "terraform"
     }
 
     port {
+      name        = "web"
       port        = 8000
       target_port = 8000
     }

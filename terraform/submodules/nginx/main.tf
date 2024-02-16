@@ -9,7 +9,7 @@ resource "kubernetes_deployment" "nginx" {
 
     selector {
       match_labels = {
-        app         = "api"
+        app         = "nginx"
         provisioner = "terraform"
       }
     }
@@ -17,7 +17,7 @@ resource "kubernetes_deployment" "nginx" {
     template {
       metadata {
         labels = {
-          app         = "api"
+          app         = "nginx"
           provisioner = "terraform"
         }
       }
@@ -43,7 +43,8 @@ resource "kubernetes_service" "nginx-service" {
 
   spec {
     selector = {
-      app = kubernetes_deployment.nginx.spec[0].template[0].metadata[0].labels.app
+      app         = "nginx"
+      provisioner = "terraform"
     }
 
     port {

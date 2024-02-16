@@ -32,6 +32,11 @@ module "helm" {
   helm-namespace = var.namespace
 }
 
+module "otel" {
+  source         = "./submodules/otel"
+  helm-namespace = var.namespace
+}
+
 
 output "api-status" {
   value = module.api.api-deployment-status
@@ -39,4 +44,8 @@ output "api-status" {
 
 output "nginx-tf-id" {
   value = module.nginx.nginx-id
+}
+
+output "helm-chart" {
+  value = module.helm.helm_chart
 }
