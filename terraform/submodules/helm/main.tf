@@ -99,7 +99,53 @@ resource "kubernetes_manifest" "service-monitor" {
   }
 }
 
-/// Endpoints list object
+resource "kubernetes_manifest" "pod-monitor" {
+  manifest = {
+    apiVersion = "monitoring.coreos.com/v1"
+    kind       = "PodMonitor"
+    metadata = {
+      name      = "legal-api-pod-monitor"
+      namespace = var.helm-namespace
+      labels = {
+        app         = "kube-prometheus-stack-prometheus"
+        chart       = "kube-prometheus-stack-56.6.2"
+        heritage    = "Helm"
+        release     = "kube-prometheus-stack"
+        app         = "api"
+        provisioner = "terraform"
+      }
+    }
+    spec = {
+      jobLabel = "legal-api-pod-job"
+      selector = {
+        matchLabels = {
+          app         = "api"
+          provisioner = "terraform"
+        }
+      }
+      podMetricsEndpoints = [{
+        port   = "web"
+        path   = "/metrics"
+        scheme = "http"
+      }]
+    }
+  }
+}
+
+
+
+# kind: PodMonitor
+# metadata:
+#   name: example-app
+#   labels:
+#     team: frontend
+# spec:
+#   selector:
+#     matchLabels:
+#       app: example-app
+#   podMetricsEndpoints:
+#   - port: web
+# /// Endpoints list object
 # [check "- authorization:
 #     credentials:
 #       key: some_key

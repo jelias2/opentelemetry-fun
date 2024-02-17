@@ -30,6 +30,7 @@ resource "kubernetes_deployment" "example" {
           image = "us-central1-docker.pkg.dev/workspace-406820/legal-api-container-repo/legal-term-api:monitor"
           name  = "api-container"
           port {
+            name           = "web"
             container_port = 8000
           }
         }
