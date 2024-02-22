@@ -1,7 +1,7 @@
 resource "helm_release" "opentelemetry" {
-  name = "opentelemetry-collector"
+  name = "jaeger-backend"
 
-  chart      = "opentelemetry-collector"
+  chart      = "jaegertracing"
   repository = "open-telemetry"
 
   set {
@@ -13,5 +13,3 @@ resource "helm_release" "opentelemetry" {
     value = "deployment"
   }
 }
-
-## Use grafana jaeger data source: jaeger-query.dev.svc.cluster.local:80

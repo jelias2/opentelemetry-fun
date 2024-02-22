@@ -27,11 +27,15 @@ resource "kubernetes_deployment" "example" {
 
       spec {
         container {
-          image = "us-central1-docker.pkg.dev/workspace-406820/legal-api-container-repo/legal-term-api:monitor"
-          name  = "api-container"
+          image = "us-central1-docker.pkg.dev/workspace-406820/legal-api-container-repo/legal-term-api:use-tempo-url"
+          name  = "legal-api"
           port {
             name           = "web"
             container_port = 8000
+          }
+          env {
+            name  = "TEMPO_URL"
+            value = "http://opentelemetry-collector.dev.svc.cluster.local:4318"
           }
         }
       }
